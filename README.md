@@ -2,7 +2,7 @@
 
 ![Swiss Electricity Consumption Index (1980 = 100)](assets/dashboard_index_1980_100.png)
 
-*Indexed electricity consumption in Switzerland (1980 = 100) with key macroeconomic events highlighted.*
+➡️ *For full interactivity (filters, tooltips, drill-downs), open the live dashboard via the link below.*
 
 This project analyses long-term trends in electricity consumption in Switzerland using publicly available national energy statistics.
 
