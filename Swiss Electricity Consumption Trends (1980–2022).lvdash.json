@@ -1,0 +1,401 @@
+{
+  "datasets": [
+    {
+      "name": "58b4ad39",
+      "displayName": "electricity_annual_trend",
+      "queryLines": [
+        "SELECT\r\n",
+        "  year,\r\n",
+        "  ROUND(SUM(tj_sum) / 3600.0, 1) AS electricity_twh\r\n",
+        "FROM workspace.default.gold_energy_annual\r\n",
+        "WHERE energy_carrier = 'electricity'\r\n",
+        "GROUP BY year\r\n",
+        "ORDER BY year;\r\n",
+        "\r\n",
+        "\r\n"
+      ]
+    },
+    {
+      "name": "3afd23df",
+      "displayName": "YoY change (%) для Electricity",
+      "queryLines": [
+        "WITH base AS (\r\n",
+        "  SELECT\r\n",
+        "    year,\r\n",
+        "    SUM(tj_sum) / 3600.0 AS electricity_twh\r\n",
+        "  FROM workspace.default.gold_energy_annual\r\n",
+        "  WHERE energy_carrier = 'electricity'\r\n",
+        "  GROUP BY year\r\n",
+        "),\r\n",
+        "yoy AS (\r\n",
+        "  SELECT\r\n",
+        "    year,\r\n",
+        "    electricity_twh,\r\n",
+        "    (electricity_twh - LAG(electricity_twh) OVER (ORDER BY year))\r\n",
+        "      / LAG(electricity_twh) OVER (ORDER BY year) * 100 AS yoy_pct\r\n",
+        "  FROM base\r\n",
+        ")\r\n",
+        "SELECT\r\n",
+        "  year,\r\n",
+        "  yoy_pct\r\n",
+        "FROM yoy\r\n",
+        "WHERE yoy_pct IS NOT NULL\r\n",
+        "ORDER BY year;\r\n"
+      ]
+    },
+    {
+      "name": "248fd7dc",
+      "displayName": "Electricity Growth Index Since 1980",
+      "queryLines": [
+        "WITH base AS (\r\n",
+        "  SELECT\r\n",
+        "    year,\r\n",
+        "    SUM(tj_sum) / 3600.0 AS electricity_twh\r\n",
+        "  FROM workspace.default.gold_energy_annual\r\n",
+        "  WHERE energy_carrier = 'electricity'\r\n",
+        "  GROUP BY year\r\n",
+        "),\r\n",
+        "base_year AS (\r\n",
+        "  SELECT electricity_twh AS base_value\r\n",
+        "  FROM base\r\n",
+        "  WHERE year = 1980\r\n",
+        ")\r\n",
+        "SELECT\r\n",
+        "  b.year,\r\n",
+        "  (b.electricity_twh / by.base_value) * 100 AS index_1980_100\r\n",
+        "FROM base b\r\n",
+        "CROSS JOIN base_year by\r\n",
+        "ORDER BY b.year;\r\n"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "f6625329",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "annual-electricity-consumption-switzerland-tj",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "58b4ad39",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "sum(electricity_twh)",
+                      "expression": "SUM(`electricity_twh`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "hideGroupSeparator": true
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(electricity_twh)",
+                  "displayName": "Total electricity consumption (TWh)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "annotations": [
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2008",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "Global financial crisis (2008–2009)"
+                    }
+                  }
+                },
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2020",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "COVID-19 pandemic"
+                    }
+                  }
+                }
+              ],
+              "frame": {
+                "showTitle": true,
+                "title": "Annual Electricity Consumption in Switzerland (TWh)\n"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 9
+          }
+        },
+        {
+          "widget": {
+            "name": "780252f7",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Key insights**<br>• Swiss electricity consumption increased steadily from 1980 to the mid-2000s.<br>• A visible slowdown appears around 2008–2009, coinciding with the global financial crisis.<br>• Since 2010, consumption has stabilised, indicating efficiency gains and structural changes in energy demand."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "electricity-consumption-yoy-change",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3afd23df",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "sum(yoy_pct)",
+                      "expression": "SUM(`yoy_pct`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    },
+                    "hideGroupSeparator": true
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(yoy_pct)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  },
+                  "axis": {
+                    "title": "YoY change (%)"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Electricity Consumption YoY Change (%)"
+              },
+              "annotations": [
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2020",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "COVID-19 pandemic"
+                    }
+                  }
+                },
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2008",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "Global financial crisis"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "021b75e3",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Key insights**\r<br>\r<br>• Swiss electricity consumption increased steadily from 1980 until the mid-2000s, reflecting economic growth and rising electrification.\r<br>• A visible slowdown appears around 2008–2009, coinciding with the global financial crisis.\r<br>• Since 2010, consumption has largely stabilised, suggesting efficiency gains and structural changes in energy demand.\r<br>• The COVID-19 period shows increased volatility rather than a long-term structural decline.\r"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 18,
+            "width": 6,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "swiss-electricity-consumption-1980-2022",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "248fd7dc",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "sum(index_1980_100)",
+                      "expression": "SUM(`index_1980_100`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year",
+                  "displayName": "Year",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(index_1980_100)",
+                  "displayName": "Index (1980 = 100)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "annotations": [
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2008",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "Financial crisis"
+                    }
+                  }
+                },
+                {
+                  "type": "vertical-line",
+                  "encodings": {
+                    "x": {
+                      "dataValue": "2020",
+                      "dataType": "INTEGER"
+                    },
+                    "label": {
+                      "value": "COVID-19"
+                    }
+                  }
+                }
+              ],
+              "frame": {
+                "showTitle": true,
+                "title": "Swiss Electricity Consumption Index (1980 = 100)"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 21,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "b75c5c18",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Key insights**\r<br>\r<br>• Swiss electricity consumption increased steadily from 1980 until the mid-2000s, reflecting economic growth and rising electrification.\r<br>\r• A visible slowdown appears around 2008–2009, coinciding with the global financial crisis.\r<br>\r• Since 2010, consumption has largely stabilised, suggesting efficiency gains and structural changes in energy demand.\r<br>\r• The COVID-19 period shows increased volatility rather than a long-term structural decline.\r"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 27,
+            "width": 6,
+            "height": 3
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
