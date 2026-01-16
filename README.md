@@ -1,5 +1,9 @@
 # Swiss Electricity Consumption Trends (1980–2022)
 
+![Swiss Electricity Consumption Index (1980 = 100)](assets/dashboard_index_1980_100.png)
+
+*Indexed electricity consumption in Switzerland (1980 = 100) with key macroeconomic events highlighted.*
+
 This project analyses long-term trends in electricity consumption in Switzerland using publicly available national energy statistics.
 
 The core deliverable is an **interactive Databricks dashboard**, allowing exploration of absolute consumption, year-over-year changes, and indexed growth over time.
