@@ -1,0 +1,58 @@
+# Swiss Electricity Consumption Trends (1980–2022)
+
+This project analyses long-term trends in electricity consumption in Switzerland using publicly available national energy statistics.  
+The analysis focuses on absolute consumption, year-over-year changes, and indexed growth to identify structural shifts in energy demand.
+
+---
+
+## 📊 Visualisations
+
+### 1. Annual Electricity Consumption (TWh)
+Shows total electricity consumption in Switzerland from 1980 to 2022.  
+The chart highlights steady growth until the mid-2000s, followed by a stabilisation phase.
+
+### 2. Electricity Consumption YoY Change (%)
+Displays year-over-year percentage changes, capturing short-term volatility and economic shocks such as:
+- Global financial crisis (2008–2009)
+- COVID-19 pandemic (2020)
+
+### 3. Electricity Consumption Index (1980 = 100)
+Normalised index to compare long-term growth independent of absolute units.  
+This view clearly illustrates structural growth until the mid-2000s and relative stability thereafter.
+
+---
+
+## 🔍 Key Insights
+
+- Swiss electricity consumption increased steadily from 1980 until the mid-2000s, reflecting economic growth and rising electrification.
+- A visible slowdown appears around 2008–2009, coinciding with the global financial crisis.
+- Since 2010, consumption has largely stabilised, suggesting efficiency gains and structural changes in energy demand.
+- The COVID-19 period shows increased volatility rather than a long-term structural decline.
+
+---
+
+## 🗂 Data Source
+
+- **Swiss Federal Office of Energy (SFOE / BFE)**  
+  Public energy balance statistics (Elektrizitätsbilanz Schweiz)
+
+The data is publicly available and used for educational and analytical purposes.
+
+---
+
+## 🛠 Tools & Technologies
+
+- Databricks SQL
+- SQL (aggregation, indexing, YoY calculations)
+- Interactive dashboards
+- GitHub for version control and portfolio presentation
+
+---
+
+## 🎯 Purpose
+
+This project is part of a personal data analytics portfolio and demonstrates:
+- Time series analysis
+- Energy sector domain understanding
+- Clear analytical storytelling using data visualisation
+
