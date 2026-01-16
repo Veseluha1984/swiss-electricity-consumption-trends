@@ -1,15 +1,29 @@
 # Swiss Electricity Consumption Trends (1980–2022)
 
-This project analyses long-term trends in electricity consumption in Switzerland using publicly available national energy statistics.  
-The analysis focuses on absolute consumption, year-over-year changes, and indexed growth to identify structural shifts in energy demand.
+This project analyses long-term trends in electricity consumption in Switzerland using publicly available national energy statistics.
+
+The core deliverable is an **interactive Databricks dashboard**, allowing exploration of absolute consumption, year-over-year changes, and indexed growth over time.
 
 ---
 
-## 📊 Visualisations
+## 🔗 Interactive Dashboard
+
+👉 **Live Databricks dashboard (public):**  
+https://dbc-817d9cb9-9ea8.cloud.databricks.com/dashboardsv3/01f0f2e6aac110c1bde66b026478c652/published?o=7474657422351518
+
+The dashboard includes:
+- Interactive tooltips
+- Time-series exploration
+- Event annotations (financial crisis, COVID-19)
+- Multiple analytical perspectives
+
+---
+
+## 📊 Analytical Views
 
 ### 1. Annual Electricity Consumption (TWh)
 Shows total electricity consumption in Switzerland from 1980 to 2022.  
-The chart highlights steady growth until the mid-2000s, followed by a stabilisation phase.
+Highlights steady growth until the mid-2000s, followed by a prolonged stabilisation phase.
 
 ### 2. Electricity Consumption YoY Change (%)
 Displays year-over-year percentage changes, capturing short-term volatility and economic shocks such as:
@@ -17,8 +31,8 @@ Displays year-over-year percentage changes, capturing short-term volatility and 
 - COVID-19 pandemic (2020)
 
 ### 3. Electricity Consumption Index (1980 = 100)
-Normalised index to compare long-term growth independent of absolute units.  
-This view clearly illustrates structural growth until the mid-2000s and relative stability thereafter.
+Normalised index to compare long-term growth independently of absolute units.  
+Clearly illustrates structural growth until the mid-2000s and relative stability thereafter.
 
 ---
 
@@ -34,7 +48,7 @@ This view clearly illustrates structural growth until the mid-2000s and relative
 ## 🗂 Data Source
 
 - **Swiss Federal Office of Energy (SFOE / BFE)**  
-  Public energy balance statistics (Elektrizitätsbilanz Schweiz)
+  Public energy balance statistics (*Elektrizitätsbilanz Schweiz*)
 
 The data is publicly available and used for educational and analytical purposes.
 
@@ -45,7 +59,7 @@ The data is publicly available and used for educational and analytical purposes.
 - Databricks SQL
 - SQL (aggregation, indexing, YoY calculations)
 - Interactive dashboards
-- GitHub for version control and portfolio presentation
+- GitHub (version control & portfolio presentation)
 
 ---
 
@@ -54,5 +68,4 @@ The data is publicly available and used for educational and analytical purposes.
 This project is part of a personal data analytics portfolio and demonstrates:
 - Time series analysis
 - Energy sector domain understanding
-- Clear analytical storytelling using data visualisation
-
+- Analytical storytelling using interactive visualisation
